@@ -25,31 +25,37 @@ import kotlin.concurrent.thread
 class SecondTaskActivity : AppCompatActivity() {
 
     private var loaderType: String = ""
+    private var imageView: ImageView? = null
+    private var progressBar: ProgressBar? = null
+    private var editText: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second_task)
+        imageView = findViewById(R.id.image_view)
+        progressBar = findViewById(R.id.progressBar)
+        editText = findViewById(R.id.editText)
         loaderType = intent.getStringExtra(MenuActivity.LOADER_TYPE).toString()
     }
 
     fun onDownloadButtonClicked(view: View) {
-        val url = findViewById<EditText>(R.id.editText).text.toString()
-        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE;
+        val url = editText?.text.toString()
+        progressBar?.visibility = View.VISIBLE;
         when (loaderType) {
             MenuActivity.OPEN_WITH_GLIDE_TAG -> downloadImageWithGlide(url)
             MenuActivity.OPEN_WITH_PICASSO_TAG -> downloadImageWithPicaso(url)
             MenuActivity.OPEN_WITH_DEFAULT_LIBRARY_TAG -> downloadImageWithDefaultLibrary(url)
             else -> {
-                onError()
+                onErrorCatched("Download method doesnt exist")
             }
         }
     }
 
-    private fun onError() {
-        findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE;
+    private fun onErrorCatched(errorMessage: String) {
+        progressBar?.visibility = View.INVISIBLE;
         Toast.makeText(
             this@SecondTaskActivity,
-            "Download failed :(",
+            errorMessage,
             Toast.LENGTH_SHORT
         ).show()
     }
@@ -60,13 +66,13 @@ class SecondTaskActivity : AppCompatActivity() {
             .load(url)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE;
-                    findViewById<ImageView>(R.id.image_view).setImageBitmap(resource)
+                    progressBar?.visibility = View.INVISIBLE;
+                    imageView?.setImageBitmap(resource)
                 }
 
                 override fun onLoadFailed(errorDrawable: Drawable?) {
                     super.onLoadFailed(errorDrawable)
-                    onError()
+                    onErrorCatched("Download with Glide failed")
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -75,12 +81,13 @@ class SecondTaskActivity : AppCompatActivity() {
     }
 
     private fun downloadImageWithPicaso(url: String) {
-        Picasso.with(this).load(url).into(findViewById(R.id.image_view), object : Callback {
+        Picasso.with(this).load(url).into(imageView, object : Callback {
             override fun onSuccess() {
-                findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE; }
+                progressBar?.visibility = View.INVISIBLE;
+            }
 
             override fun onError() {
-                onError()
+                onErrorCatched("Download with Picasso failed")
             }
         });
     }
@@ -96,12 +103,11 @@ class SecondTaskActivity : AppCompatActivity() {
                 val input: InputStream = connection.inputStream
                 val bitmap: Bitmap = BitmapFactory.decodeStream(input)
                 runOnUiThread {
-                    findViewById<ImageView>(R.id.image_view).setImageBitmap(bitmap)
-                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE;
+                    imageView?.setImageBitmap(bitmap)
+                    progressBar?.visibility = View.INVISIBLE;
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
-                runOnUiThread { onError() }
+                runOnUiThread { onErrorCatched("Download with default libraey failed, cause: " + e.message) }
             }
         }
     }

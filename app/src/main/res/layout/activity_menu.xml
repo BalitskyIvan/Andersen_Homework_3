@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MenuActivity">
+
+    <Button
+        android:id="@+id/open_first_task_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openFirstTask"
+        android:text="@string/first_task" />
+
+    <Button
+        android:id="@+id/open_second_task_glide_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openSecondTaskWithGlide"
+        android:text="@string/second_task_glide" />
+
+    <Button
+        android:id="@+id/open_second_task_picasso_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openSecondTaskWithPicaso"
+        android:text="@string/second_task_picaso" />
+
+    <Button
+        android:id="@+id/open_second_task_default_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openSecondTaskWithDefaultLibrary"
+        android:text="@string/second_task_default_library" />
+</LinearLayout>

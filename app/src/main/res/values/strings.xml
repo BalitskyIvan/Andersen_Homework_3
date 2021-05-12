@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">AndersenHomework</string>
+    <string name="austria">Austria</string>
+    <string name="poland">Poland</string>
+    <string name="italy">Italy</string>
+    <string name="columbia">Columbia</string>
+    <string name="madagascar">Madagascar</string>
+    <string name="tailand">Tailand</string>
+    <string name="danmark">Danmark</string>
+    <string name="switzerland">Switzerland</string>
+    <string name="first_task">First Task</string>
+    <string name="second_task_glide">Second task with Glide</string>
+    <string name="second_task_picaso">Second task with Picaso</string>
+    <string name="second_task_default_library">Second task with Default Library</string>
+    <string name="download">Download</string>
+    <string name="enter_link_to_image">Enter link to image</string>
+</resources>
